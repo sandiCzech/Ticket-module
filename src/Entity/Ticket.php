@@ -25,6 +25,11 @@ class Ticket extends \WebCMS\Entity\Entity
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    private $url;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $date;
 
     /**
@@ -85,6 +90,17 @@ class Ticket extends \WebCMS\Entity\Entity
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    public function setUrl($url)
+    {
+        $this->url = $url;
         return $this;
     }
 

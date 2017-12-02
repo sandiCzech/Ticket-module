@@ -99,6 +99,8 @@ class TicketPresenter extends BasePresenter
 
         $form->addText('name', 'Název')
             ->setRequired('Jméno je povinné.');
+        $form->addText('url', 'URL')
+            ->setRequired('URL je povinné.');
         $form->addText('date', 'Datum');
         $form->addText('day', 'Den');
         $form->addText('place', 'Místo');
@@ -149,6 +151,7 @@ class TicketPresenter extends BasePresenter
         }*/
 
         $this->ticket->setName($values->name);
+        $this->ticket->url($values->url);
         $this->ticket->setDate($values->date);
         $this->ticket->setDay($values->day);
         $this->ticket->setPlace($values->place);
