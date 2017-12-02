@@ -70,4 +70,17 @@ class TicketPresenter extends BasePresenter
 		$this->template->id = $id;
 	}
 
+	public function newsBox($context, $fromPage)
+	{
+		$tickets = $this->repository->findBy(array(
+			'page' => $fromPage), array('date' => 'DESC')
+		);
+
+		$template = $context->createTemplate();
+		$template->setFile('../app/templates/ticket-module/Ticket/box.latte');
+		$template->tickets = $tickets;
+
+		return $template;
+  }
+
 }

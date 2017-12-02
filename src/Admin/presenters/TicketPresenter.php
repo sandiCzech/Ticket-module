@@ -151,7 +151,7 @@ class TicketPresenter extends BasePresenter
         }*/
 
         $this->ticket->setName($values->name);
-        $this->ticket->url($values->url);
+        $this->ticket->setUrl($values->url);
         $this->ticket->setDate($values->date);
         $this->ticket->setDay($values->day);
         $this->ticket->setPlace($values->place);

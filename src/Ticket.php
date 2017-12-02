@@ -48,6 +48,6 @@ class Ticket extends \WebCMS\Module
 
     public function __construct()
     {
-
+        $this->addBox('Tickets box', 'Ticket', 'ticketsBox');
     }
 }
