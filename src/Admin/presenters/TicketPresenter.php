@@ -17,7 +17,7 @@ use WebCMS\TicketModule\Entity\Ticket;
 class TicketPresenter extends BasePresenter
 {
 
-    private $teacher;
+    private $ticket;
 
     protected function startup()
     {
@@ -45,7 +45,8 @@ class TicketPresenter extends BasePresenter
 
         $grid->setFilterRenderType(\Grido\Components\Filters\Filter::RENDER_INNER);
 
-        $grid->addColumnText('name', 'Jméno')->setSortable()->setFilterText();
+        $grid->addColumnText('name', 'Název')->setSortable()->setFilterText();
+        $grid->addColumnText('date', 'Datum')->setSortable()->setFilterText();
 
         $grid->addActionHref("update", 'Edit', 'update', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn' , 'btn-primary', 'ajax')));
         $grid->addActionHref("delete", 'Delete', 'delete', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger'), 'data-confirm' => 'Are you sure you want to delete this item?'));
@@ -89,31 +90,28 @@ class TicketPresenter extends BasePresenter
     {
         $form = $this->createForm('form-submit', 'default', null);
 
-        $options = $this->em->getRepository('\WebCMS\TicketModule\Entity\Field')->findBy(array(
-            'isTeacher' => true
-        ), array());
+        $categories = $this->em->getRepository('\WebCMS\TicketModule\Entity\Category')->findAll();
 
 
-        foreach ($options as $option) {
-            $optionsToSelect[$option->getId()] = $option->getName();
+        foreach ($categories as $category) {
+            $categoriesToSelect[$category->getId()] = $category->getName();
         }
 
-        $form->addText('degreeBefore', 'Titul před jménem');
-        $form->addText('firstname', 'Jméno')
+        $form->addText('name', 'Název')
             ->setRequired('Jméno je povinné.');
-        $form->addText('lastname', 'Příjmení')
-            ->setRequired('Příjmení je povinné.');
-        $form->addText('degreeAfter', 'Titul za jménem');
-        $form->addText('department', 'Department');
-        $form->addMultiSelect('fields', 'Fields', $optionsToSelect);
-        $form->addTextArea('perex', 'Perex')->setAttribute('class', array('editor'));
+        $form->addText('date', 'Datum');
+        $form->addText('day', 'Den');
+        $form->addText('place', 'Místo');
+        $form->addText('price', 'Cena');
+        $form->addCheckbox('carousel', 'Carousel');
+        $form->addSelect('category', 'Kategorie', $categoriesToSelect);
         $form->addTextArea('text', 'Text')->setAttribute('class', array('editor'));
 
-        if ($this->teacher) {
-            $form->setDefaults($this->teacher->toArray());
+        if ($this->ticket) {
+            $form->setDefaults($this->ticket->toArray());
         }
 
-        $form->addSubmit('save', 'Save teacher');
+        $form->addSubmit('save', 'Save ticket');
 
         $form->onSuccess[] = callback($this, 'formSubmitted');
 
@@ -124,14 +122,12 @@ class TicketPresenter extends BasePresenter
     {
         $values = $form->getValues();
 
-        $page = $this->em->getRepository('\WebCMS\Entity\Page')->find($this->getParameter('idPage'));
-
-        if (!$this->teacher) {
-            $this->teacher = new Teacher;
-            $this->em->persist($this->teacher);
+        if (!$this->ticket) {
+            $this->ticket = new Ticket;
+            $this->em->persist($this->ticket);
         }
 
-        if (array_key_exists('files', $_POST)) {
+        /*if (array_key_exists('files', $_POST)) {
 
             $counter = 0;
 
@@ -150,33 +146,27 @@ class TicketPresenter extends BasePresenter
             }
         } else {
             $this->teacher->setPhoto(null);
+        }*/
+
+        $this->ticket->setName($values->name);
+        $this->ticket->setDate($values->date);
+        $this->ticket->setDay($values->day);
+        $this->ticket->setPlace($values->place);
+        $this->ticket->setPrice($values->price);
+        $this->ticket->setText($values->text);
+        $this->ticket->setCarousel($values->carousel);
+        $this->ticket->setCategory($values->category);
+
+        if ($values->category) {
+            $category = $this->em->getRepository('\WebCMS\TicketModule\Entity\Category')->find($values->category);
+            $this->ticket->setCategory($category);
         }
 
-        $this->teacher->setDegreeBefore($values->degreeBefore);
-        $this->teacher->setFirstname($values->firstname);
-        $this->teacher->setLastname($values->lastname);
-        $this->teacher->setDegreeAfter($values->degreeAfter);
-        $this->teacher->setDepartment($values->department);
-        $this->teacher->setPerex($values->perex);
-        $this->teacher->setText($values->text);
-        $this->teacher->setPage($page);
-
-        if ($values->fields) {
-            foreach ($values->fields as $key => $value) {
-                $field = $this->em->getRepository('\WebCMS\UniversityModule\Entity\Field')->find($value);
-
-                $fields[] = $field;
-            }
-
-            $this->teacher->setFields($fields);
-        }
-
-
-        $this->teacher->setActive(true);
+        $this->ticket->setActive(true);
 
         $this->em->flush();
 
-        $this->flashMessage('Teacher has been saved/updated.', 'success');
+        $this->flashMessage('Ticket has been saved/updated.', 'success');
 
         $this->forward('default', array(
             'idPage' => $this->actualPage->getId()

@@ -143,6 +143,17 @@ class Ticket extends \WebCMS\Entity\Entity
         return $this;
     }
 
+    public function getCarousel()
+    {
+        return $this->carousel;
+    }
+
+    public function setCarousel($carousel)
+    {
+        $this->carousel = $carousel;
+        return $this;
+    }
+
     public function getCreated()
     {
         return $this->created;
