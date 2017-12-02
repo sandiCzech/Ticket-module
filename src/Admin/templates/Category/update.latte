@@ -1,0 +1,35 @@
+{block content}
+
+	<div class="page-heading">	
+		<h1>{_'Add/edit category'}</h1>
+	</div>
+
+	<div class="control-group">
+		<a n:href="default idPage => $idPage" class="back">{_'Back to categories'}</a>
+	</div>
+
+	{form form}
+
+		<div class="control-group row">
+
+			<div class="col-md-6">
+
+				<div class="form-group">
+					{label name /}
+					{input name class => 'form-control'}
+		        </div>
+
+	        </div>
+
+        </div>
+
+        <div class="form-actions">
+
+			{input save class => 'btn btn-success'}
+
+		</div>
+
+
+	{/form}
+
+{/block}

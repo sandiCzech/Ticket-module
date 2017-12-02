@@ -1,0 +1,18 @@
+{block content}
+
+	<div class="page-heading">
+		<h1>{$actualPage->getTitle()}</h1>
+
+		{include tabs.latte active => 'tickets'}
+	</div>
+
+	<br />
+	<div class="buttonWrap">
+		<a class="btn btn-primary ajax" n:href="update idPage => $actualPage->getId()">{_'Add Ticket'}</a>
+	</div>
+
+	<div class="control-group">
+		{control teacherGrid}
+	</div>
+
+{/block}
