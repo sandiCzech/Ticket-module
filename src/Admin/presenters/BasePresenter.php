@@ -1,11 +1,11 @@
 <?php
 
 /**
- * This file is part of the University module for webcms2.
+ * This file is part of the Ticket module for webcms2.
  * Copyright (c) @see LICENSE
  */
 
-namespace AdminModule\UniversityModule;
+namespace AdminModule\TicketModule;
 
 /**
  * Description of
@@ -13,7 +13,7 @@ namespace AdminModule\UniversityModule;
  * @author Jakub Sanda <sanda@webcook.cz>
  */
 class BasePresenter extends \AdminModule\BasePresenter
-{	
+{
     protected function startup()
     {
 	   parent::startup();
@@ -23,7 +23,7 @@ class BasePresenter extends \AdminModule\BasePresenter
     {
 	   parent::beforeRender();
     }
-	
+
     public function actionDefault($idPage)
     {
     }

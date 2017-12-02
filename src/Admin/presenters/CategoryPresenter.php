@@ -1,14 +1,14 @@
 <?php
 
 /**
- * This file is part of the University module for webcms2.
+ * This file is part of the Ticket module for webcms2.
  * Copyright (c) @see LICENSE
  */
 
-namespace AdminModule\UniversityModule;
+namespace AdminModule\TicketModule;
 
 use Nette\Forms\Form;
-use WebCMS\UniversityModule\Entity\Category;
+use WebCMS\TicketModule\Entity\Category;
 
 /**
  *
@@ -16,7 +16,7 @@ use WebCMS\UniversityModule\Entity\Category;
  */
 class CategoryPresenter extends BasePresenter
 {
-    
+
     private $category;
 
     protected function startup()
@@ -35,13 +35,13 @@ class CategoryPresenter extends BasePresenter
 
     public function renderDefault($idPage){
         $this->reloadContent();
-        
+
         $this->template->idPage = $idPage;
     }
 
     protected function createComponentCategoryGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\UniversityModule\Entity\Category", null, array());
+        $grid = $this->createGrid($this, $name, "\WebCMS\TicketModule\Entity\Category", null, array());
 
         $grid->setFilterRenderType(\Grido\Components\Filters\Filter::RENDER_INNER);
 
@@ -57,7 +57,7 @@ class CategoryPresenter extends BasePresenter
     public function actionUpdate($id, $idPage)
     {
         if ($id) {
-            $this->category = $this->em->getRepository('\WebCMS\UniversityModule\Entity\Category')->find($id);
+            $this->category = $this->em->getRepository('\WebCMS\TicketModule\Entity\Category')->find($id);
         }
     }
 
@@ -67,16 +67,16 @@ class CategoryPresenter extends BasePresenter
 
         $this->template->idPage = $idPage;
     }
-    
+
     public function actionDelete($id){
 
-        $category = $this->em->getRepository('\WebCMS\UniversityModule\Entity\Category')->find($id);
+        $category = $this->em->getRepository('\WebCMS\TicketModule\Entity\Category')->find($id);
 
         $this->em->remove($category);
         $this->em->flush();
-        
+
         $this->flashMessage('Category has been removed.', 'success');
-        
+
         if(!$this->isAjax()){
             $this->forward('default', array(
                 'idPage' => $this->actualPage->getId()
@@ -122,5 +122,5 @@ class CategoryPresenter extends BasePresenter
         ));
     }
 
-    
+
 }

@@ -1,22 +1,22 @@
 <?php
 
 /**
- * This file is part of the University module for webcms2.
+ * This file is part of the Ticket module for webcms2.
  * Copyright (c) @see LICENSE
  */
 
-namespace AdminModule\UniversityModule;
+namespace AdminModule\TicketModule;
 
 use Nette\Forms\Form;
-use WebCMS\UniversityModule\Entity\Teacher;
+use WebCMS\TicketModule\Entity\Ticket;
 
 /**
  *
  * @author Jakub Sanda <jakub.sanda@webcook.cz>
  */
-class TeacherPresenter extends BasePresenter
+class TicketPresenter extends BasePresenter
 {
-    
+
     private $teacher;
 
     protected function startup()
@@ -35,21 +35,17 @@ class TeacherPresenter extends BasePresenter
 
     public function renderDefault($idPage){
         $this->reloadContent();
-        
+
         $this->template->idPage = $idPage;
     }
 
     protected function createComponentTeacherGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\UniversityModule\Entity\Teacher", array(array('by' => 'lastname', 'dir' => 'ASC')), array());
+        $grid = $this->createGrid($this, $name, "\WebCMS\TicketModule\Entity\Ticket", array(array('by' => 'name', 'dir' => 'ASC')), array());
 
         $grid->setFilterRenderType(\Grido\Components\Filters\Filter::RENDER_INNER);
 
-        $grid->addColumnText('degreeBefore', 'Titul před jménem')->setSortable()->setFilterText();
-        $grid->addColumnText('firstname', 'Jméno')->setSortable()->setFilterText();
-        $grid->addColumnText('lastname', 'Příjmení')->setSortable()->setFilterText();
-        $grid->addColumnText('degreeAfter', 'Titul za jménem')->setSortable()->setFilterText();
-        $grid->addColumnText('department', 'Department')->setSortable();
+        $grid->addColumnText('name', 'Jméno')->setSortable()->setFilterText();
 
         $grid->addActionHref("update", 'Edit', 'update', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn' , 'btn-primary', 'ajax')));
         $grid->addActionHref("delete", 'Delete', 'delete', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger'), 'data-confirm' => 'Are you sure you want to delete this item?'));
@@ -61,7 +57,7 @@ class TeacherPresenter extends BasePresenter
     public function actionUpdate($id, $idPage)
     {
         if ($id) {
-            $this->teacher = $this->em->getRepository('\WebCMS\UniversityModule\Entity\Teacher')->find($id);
+            $this->ticket = $this->em->getRepository('\WebCMS\TicketModule\Entity\Ticket')->find($id);
         }
     }
 
@@ -69,19 +65,19 @@ class TeacherPresenter extends BasePresenter
     {
         $this->reloadContent();
 
-        $this->template->teacher = $this->teacher;
+        $this->template->ticket = $this->ticket;
         $this->template->idPage = $idPage;
     }
-    
+
     public function actionDelete($id){
 
-        $teacher = $this->em->getRepository('\WebCMS\UniversityModule\Entity\Teacher')->find($id);
+        $teacher = $this->em->getRepository('\WebCMS\TicketModule\Entity\Ticket')->find($id);
 
-        $this->em->remove($teacher);
+        $this->em->remove($ticket);
         $this->em->flush();
-        
-        $this->flashMessage('Teacher has been removed.', 'success');
-        
+
+        $this->flashMessage('Ticket has been removed.', 'success');
+
         if(!$this->isAjax()){
             $this->forward('default', array(
                 'idPage' => $this->actualPage->getId()
@@ -93,11 +89,11 @@ class TeacherPresenter extends BasePresenter
     {
         $form = $this->createForm('form-submit', 'default', null);
 
-        $options = $this->em->getRepository('\WebCMS\UniversityModule\Entity\Field')->findBy(array(
+        $options = $this->em->getRepository('\WebCMS\TicketModule\Entity\Field')->findBy(array(
             'isTeacher' => true
         ), array());
 
-        
+
         foreach ($options as $option) {
             $optionsToSelect[$option->getId()] = $option->getName();
         }
@@ -138,31 +134,31 @@ class TeacherPresenter extends BasePresenter
         if (array_key_exists('files', $_POST)) {
 
             $counter = 0;
-            
+
             foreach($_POST['files'] as $path){
 
                 $photo = new \WebCMS\UniversityModule\Entity\Photo;
                 $photo->setTitle($_POST['fileNames'][$counter]);
-                
+
                 $photo->setPath($path);
 
-                $this->teacher->setPhoto($photo); 
+                $this->teacher->setPhoto($photo);
 
                 $this->em->persist($photo);
 
                 $counter++;
             }
         } else {
-            $this->teacher->setPhoto(null); 
+            $this->teacher->setPhoto(null);
         }
 
         $this->teacher->setDegreeBefore($values->degreeBefore);
         $this->teacher->setFirstname($values->firstname);
         $this->teacher->setLastname($values->lastname);
         $this->teacher->setDegreeAfter($values->degreeAfter);
-        $this->teacher->setDepartment($values->department); 
+        $this->teacher->setDepartment($values->department);
         $this->teacher->setPerex($values->perex);
-        $this->teacher->setText($values->text); 
+        $this->teacher->setText($values->text);
         $this->teacher->setPage($page);
 
         if ($values->fields) {
@@ -172,11 +168,11 @@ class TeacherPresenter extends BasePresenter
                 $fields[] = $field;
             }
 
-            $this->teacher->setFields($fields); 
+            $this->teacher->setFields($fields);
         }
 
-        
-        $this->teacher->setActive(true);    
+
+        $this->teacher->setActive(true);
 
         $this->em->flush();
 
@@ -187,5 +183,5 @@ class TeacherPresenter extends BasePresenter
         ));
     }
 
-    
+
 }
