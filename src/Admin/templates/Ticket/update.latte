@@ -25,6 +25,11 @@
         </div>
 
 				<div class="form-group">
+					{label order /}
+					{input order class => 'form-control'}
+        </div>
+
+				<div class="form-group">
 					{label category /}
 					{input category class => 'form-control'}
         </div>
@@ -59,24 +64,26 @@
 					{input carousel class => 'form-control editor'}
         </div>
 
-		        {*<a n:href=":Admin:Filesystem:default dialog => true, multiple => false" data-container="#pictures" class="btn btn-primary ajax filesDialog" data-remote="false" data-target="#myModal" data-toggle="modal">{_'Load photo'}</a>*}
+        <a n:href=":Admin:Filesystem:default dialog => true, multiple => true" data-container="#pictures" class="btn btn-primary ajax filesDialog" data-remote="false" data-target="#myModal" data-toggle="modal">{_'Load photo'}</a>
 
-	        </div>
+        </div>
 
-	        {*<div class="col-md-10" id="pictures">
-	        	{if $teacher}
-	        		{if $teacher->getPhoto()}
-						<div class="col-md-3 jq_fileBox">
-							<div class="img-thumbnail">
-								<img src="{$basePath}{$teacher->getPhoto()->getPath()|thumbnail:'teacher'}" />
-								<input type="hidden" name="files[]" value="{$teacher->getPhoto()->getPath()}" />
-								<input class="form-control" type="text" name="fileNames[]" value="{$teacher->getPhoto()->getTitle()}" />
-								<span class="btn btn-default jq_fileDelete">&times</span>
+        <div class="col-md-10" id="pictures">
+        	{if $teacher}
+						{foreach $actuality->getPhotos() as $photo}
+							<div class="col-md-3 jq_fileBox">
+								<div class="img-thumbnail">
+									<img src="{$basePath}{$photo->getPath()|thumbnail:'system'}" />
+									<input type="hidden" name="files[]" value="{$photo->getPath()}" />
+									<input class="form-control" type="text" name="fileNames[]" value="{$photo->getTitle()}" />
+									<input class="form-control" type="radio" name="fileDefault[]" value="{$iterator->counter}" {if $photo->getDefault()}checked{/if} />
+									<input class="form-control" type="radio" name="fileCarousel[]" value="{$iterator->counter}" {if $photo->getCarousel()}checked{/if} />
+									<span class="btn btn-default jq_fileDelete">'&times'</span>
+								</div>
 							</div>
-						</div>
+						{/foreach}
 					{/if}
-				{/if}
-	        </div>*}
+        </div>
 
 
 
@@ -84,9 +91,9 @@
 
         <div class="form-actions">
 
-			{input save class => 'btn btn-success'}
+					{input save class => 'btn btn-success'}
 
-		</div>
+				</div>
 
 
 	{/form}

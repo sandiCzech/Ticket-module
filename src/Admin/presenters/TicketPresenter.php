@@ -46,7 +46,7 @@ class TicketPresenter extends BasePresenter
         $grid->setFilterRenderType(\Grido\Components\Filters\Filter::RENDER_INNER);
 
         $grid->addColumnText('name', 'Název')->setSortable()->setFilterText();
-        $grid->addColumnText('date', 'Datum')->setSortable()->setFilterText();
+        $grid->addColumnText('order', 'Pořadí')->setSortable()->setFilterText();
 
         $grid->addActionHref("update", 'Edit', 'update', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn' , 'btn-primary', 'ajax')));
         $grid->addActionHref("delete", 'Delete', 'delete', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger'), 'data-confirm' => 'Are you sure you want to delete this item?'));
@@ -102,6 +102,7 @@ class TicketPresenter extends BasePresenter
         $form->addText('url', 'URL')
             ->setRequired('URL je povinné.');
         $form->addText('date', 'Datum');
+        $form->addInteger('order', 'Pořadí');
         $form->addText('day', 'Den');
         $form->addText('place', 'Místo');
         $form->addText('price', 'Cena');
@@ -129,29 +130,43 @@ class TicketPresenter extends BasePresenter
             $this->em->persist($this->ticket);
         }
 
-        /*if (array_key_exists('files', $_POST)) {
+        if(array_key_exists('files', $_POST)){
+    			$counter = 0;
+    			if(array_key_exists('fileDefault', $_POST)) $default = intval($_POST['fileDefault'][0]) - 1;
+    			else $default = 0;
 
-            $counter = 0;
+          if(array_key_exists('fileCarousel', $_POST)) $carousel = intval($_POST['fileCarousel'][0]) - 1;
+    			else $carousel = 0;
 
-            foreach($_POST['files'] as $path){
+    			foreach($_POST['files'] as $path){
 
-                $photo = new \WebCMS\UniversityModule\Entity\Photo;
-                $photo->setTitle($_POST['fileNames'][$counter]);
+    				$photo = new \WebCMS\TicketModule\Entity\Photo;
+    				$photo->setTitle($_POST['fileNames'][$counter]);
 
-                $photo->setPath($path);
+    				if($default === $counter){
+    					$photo->setDefault(TRUE);
+    				}else{
+    					$photo->setDefault(FALSE);
+    				}
 
-                $this->teacher->setPhoto($photo);
+            if($carousel === $counter){
+    					$photo->setCarousel(TRUE);
+    				}else{
+    					$photo->setCarousel(FALSE);
+    				}
 
-                $this->em->persist($photo);
+    				$photo->setPath($path);
+    				$photo->setTicket($this->ticket);
 
-                $counter++;
-            }
-        } else {
-            $this->teacher->setPhoto(null);
-        }*/
+    				$this->em->persist($photo);
+
+    				$counter++;
+    			}
+    		}
 
         $this->ticket->setName($values->name);
         $this->ticket->setUrl($values->url);
+        $this->ticket->setOrder($values->order);
         $this->ticket->setDate($values->date);
         $this->ticket->setDay($values->day);
         $this->ticket->setPlace($values->place);

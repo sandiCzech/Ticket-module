@@ -28,6 +28,11 @@ class Ticket extends \WebCMS\Entity\Entity
     private $url;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $order;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $date;
@@ -82,6 +87,12 @@ class Ticket extends \WebCMS\Entity\Entity
      */
     private $category;
 
+    /**
+  	 * @ORM\OneToMany(targetEntity="Photo", mappedBy="ticket")
+  	 * @var Array
+  	 */
+  	private $photos;
+
     public function getName()
     {
         return $this->name;
@@ -101,6 +112,17 @@ class Ticket extends \WebCMS\Entity\Entity
     public function setUrl($url)
     {
         $this->url = $url;
+        return $this;
+    }
+
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    public function setOrder($order)
+    {
+        $this->order = $order;
         return $this;
     }
 
@@ -207,5 +229,33 @@ class Ticket extends \WebCMS\Entity\Entity
         $this->category = $category;
         return $this;
     }
+
+    public function getPhotos() {
+  		return $this->photos;
+  	}
+
+  	public function setPhotos(Array $photos) {
+  		$this->photos = $photos;
+  	}
+
+  	public function getDefaultPhoto(){
+  		foreach($this->getPhotos() as $photo){
+  			if($photo->getDefault()){
+  				return $photo;
+  			}
+  		}
+  		
+  		return NULL;
+  	}
+
+    public function getCarouselPhoto(){
+  		foreach($this->getPhotos() as $photo){
+  			if($photo->getCarousel()){
+  				return $photo;
+  			}
+  		}
+
+  		return NULL;
+  	}
 
 }

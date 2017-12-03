@@ -70,15 +70,19 @@ class TicketPresenter extends BasePresenter
 		$this->template->id = $id;
 	}
 
-	public function newsBox($context, $fromPage)
+	public function ticketsBox($context, $fromPage)
 	{
-		$tickets = $this->repository->findBy(array(
-			'page' => $fromPage), array('date' => 'DESC')
-		);
+		$repository = $context->em->getRepository('\WebCMS\TicketModule\Entity\Ticket');
+		$tickets = $repository->findBy(array(), array('date' => 'DESC'), $limit = 3);
 
 		$template = $context->createTemplate();
 		$template->setFile('../app/templates/ticket-module/Ticket/box.latte');
 		$template->tickets = $tickets;
+		$template->link = $context->link(':Frontend:Ticket:Ticket:default', array(
+		    'id' => $fromPage->getId(),
+		    'path' => $fromPage->getPath(),
+		    'abbr' => $context->abbr
+		));
 
 		return $template;
   }
