@@ -41,7 +41,7 @@ class TicketPresenter extends BasePresenter
 
     protected function createComponentTeacherGrid($name)
     {
-        $grid = $this->createGrid($this, $name, "\WebCMS\TicketModule\Entity\Ticket", array(array('by' => 'name', 'dir' => 'ASC')), array());
+        $grid = $this->createGrid($this, $name, "\WebCMS\TicketModule\Entity\Ticket", array(array('by' => 'rank', 'dir' => 'ASC')), array());
 
         $grid->setFilterRenderType(\Grido\Components\Filters\Filter::RENDER_INNER);
 

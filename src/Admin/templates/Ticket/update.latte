@@ -77,7 +77,6 @@
 									<input type="hidden" name="files[]" value="{$photo->getPath()}" />
 									<input class="form-control" type="text" name="fileNames[]" value="{$photo->getTitle()}" />
 									<input class="form-control" type="radio" name="fileDefault[]" value="{$iterator->counter}" {if $photo->getDefault()}checked{/if} />
-									<input class="form-control" type="radio" name="fileCarousel[]" value="{$iterator->counter}" {if $photo->getCarousel()}checked{/if} />
 									<span class="btn btn-default jq_fileDelete">'&times'</span>
 								</div>
 							</div>

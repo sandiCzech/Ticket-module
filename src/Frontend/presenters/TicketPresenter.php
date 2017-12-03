@@ -43,7 +43,7 @@ class TicketPresenter extends BasePresenter
 
 	public function actionDefault($id)
     {
-		$this->tickets = $this->repository->findBy(array(), array('created' => 'DESC'));
+		$this->tickets = $this->repository->findBy(array(), array('rank' => 'ASC'));
 		$this->categories = $this->categoriesRepository->findBy(array(), array('id' => 'DESC'));
 	}
 
@@ -73,7 +73,7 @@ class TicketPresenter extends BasePresenter
 	public function ticketsBox($context, $fromPage)
 	{
 		$repository = $context->em->getRepository('\WebCMS\TicketModule\Entity\Ticket');
-		$tickets = $repository->findBy(array(), array('date' => 'DESC'), $limit = 3);
+		$tickets = $repository->findBy(array(), array('rank' => 'ASC'), $limit = 3);
 
 		$template = $context->createTemplate();
 		$template->setFile('../app/templates/ticket-module/Ticket/box.latte');

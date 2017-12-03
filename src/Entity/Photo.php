@@ -34,7 +34,7 @@ class Photo extends \WebCMS\Entity\Entity
 	private $path;
 
 	/**
-	 * @ORM\Column(type="boolean")
+	 * @ORM\Column(name="`default`", type="boolean")
 	 */
 	private $default;
 
