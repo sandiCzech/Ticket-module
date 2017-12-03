@@ -46,7 +46,7 @@ class TicketPresenter extends BasePresenter
         $grid->setFilterRenderType(\Grido\Components\Filters\Filter::RENDER_INNER);
 
         $grid->addColumnText('name', 'Název')->setSortable()->setFilterText();
-        $grid->addColumnText('order', 'Pořadí')->setSortable()->setFilterText();
+        $grid->addColumnText('rank', 'Pořadí')->setSortable()->setFilterText();
 
         $grid->addActionHref("update", 'Edit', 'update', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn' , 'btn-primary', 'ajax')));
         $grid->addActionHref("delete", 'Delete', 'delete', array('idPage' => $this->actualPage->getId()))->getElementPrototype()->addAttributes(array('class' => array('btn', 'btn-danger'), 'data-confirm' => 'Are you sure you want to delete this item?'));
@@ -102,7 +102,8 @@ class TicketPresenter extends BasePresenter
         $form->addText('url', 'URL')
             ->setRequired('URL je povinné.');
         $form->addText('date', 'Datum');
-        $form->addInteger('order', 'Pořadí');
+        $form->addText('rank', 'Pořadí')
+            ->addRule(Form::INTEGER, 'Pořadí musí být číslo');
         $form->addText('day', 'Den');
         $form->addText('place', 'Místo');
         $form->addText('price', 'Cena');
@@ -166,7 +167,7 @@ class TicketPresenter extends BasePresenter
 
         $this->ticket->setName($values->name);
         $this->ticket->setUrl($values->url);
-        $this->ticket->setOrder($values->order);
+        $this->ticket->setRank($values->rank);
         $this->ticket->setDate($values->date);
         $this->ticket->setDay($values->day);
         $this->ticket->setPlace($values->place);

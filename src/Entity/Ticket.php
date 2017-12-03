@@ -30,7 +30,7 @@ class Ticket extends \WebCMS\Entity\Entity
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $order;
+    private $rank;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -115,14 +115,14 @@ class Ticket extends \WebCMS\Entity\Entity
         return $this;
     }
 
-    public function getOrder()
+    public function getRank()
     {
-        return $this->order;
+        return $this->rank;
     }
 
-    public function setOrder($order)
+    public function setRank($rank)
     {
-        $this->order = $order;
+        $this->rank = $rank;
         return $this;
     }
 
@@ -244,7 +244,7 @@ class Ticket extends \WebCMS\Entity\Entity
   				return $photo;
   			}
   		}
-  		
+
   		return NULL;
   	}
 
