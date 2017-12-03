@@ -34,12 +34,12 @@ class Photo extends \WebCMS\Entity\Entity
 	private $path;
 
 	/**
-	 * @ORM\Column(name="`default`",type="boolean")
+	 * @ORM\Column(type="boolean")
 	 */
 	private $default;
 
   /**
-	 * @ORM\Column(name="`default`",type="boolean")
+	 * @ORM\Column(type="boolean")
 	 */
 	private $carousel;
 
