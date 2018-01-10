@@ -101,13 +101,15 @@ class TicketPresenter extends BasePresenter
             ->setRequired('Jméno je povinné.');
         $form->addText('url', 'URL')
             ->setRequired('URL je povinné.');
-        $form->addText('date', 'Datum');
-        $form->addText('rank', 'Pořadí')
-            ->addRule(Form::INTEGER, 'Pořadí musí být číslo');
+        $form->addText('date', 'Datum')->setAttribute('class', array('datepicker'));
         $form->addText('day', 'Den');
         $form->addText('place', 'Místo');
         $form->addText('price', 'Cena');
         $form->addCheckbox('carousel', 'Carousel');
+        $form->addText('rank', 'Pořadí')
+            ->addConditionOn($form['carousel'], Form::EQUAL, true)
+                ->addRule(Form::FILLED, 'Při přidání položky do Carouselu je pořadí povinné')
+                ->addRule(Form::INTEGER, 'Pořadí musí být číslo');
         $form->addSelect('category', 'Kategorie', $categoriesToSelect);
         $form->addTextArea('text', 'Text')->setAttribute('class', array('editor'));
 
@@ -175,8 +177,8 @@ class TicketPresenter extends BasePresenter
 
         $this->ticket->setName($values->name);
         $this->ticket->setUrl($values->url);
-        $this->ticket->setRank($values->rank);
-        $this->ticket->setDate($values->date);
+        $this->ticket->setRank($values->rank == "" ? null : $values->rank);
+        $this->ticket->setDate(new \Nette\DateTime($values->date));
         $this->ticket->setDay($values->day);
         $this->ticket->setPlace($values->place);
         $this->ticket->setPrice($values->price);

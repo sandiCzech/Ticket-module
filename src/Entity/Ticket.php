@@ -33,7 +33,7 @@ class Ticket extends \WebCMS\Entity\Entity
     private $rank;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="date", nullable=true)
      */
     private $date;
 
