@@ -39,7 +39,7 @@ class TicketPresenter extends BasePresenter
         $this->template->idPage = $idPage;
     }
 
-    protected function createComponentTeacherGrid($name)
+    protected function createComponentTicketGrid($name)
     {
         $grid = $this->createGrid($this, $name, "\WebCMS\TicketModule\Entity\Ticket", array(array('by' => 'rank', 'dir' => 'ASC')), array());
 
@@ -72,7 +72,7 @@ class TicketPresenter extends BasePresenter
 
     public function actionDelete($id){
 
-        $teacher = $this->em->getRepository('\WebCMS\TicketModule\Entity\Ticket')->find($id);
+        $ticket = $this->em->getRepository('\WebCMS\TicketModule\Entity\Ticket')->find($id);
 
         $this->em->remove($ticket);
         $this->em->flush();
