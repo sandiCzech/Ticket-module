@@ -129,6 +129,14 @@ class TicketPresenter extends BasePresenter
         if (!$this->ticket) {
             $this->ticket = new Ticket;
             $this->em->persist($this->ticket);
+        } else {
+            // delete old photos and save new ones
+            $qb = $this->em->createQueryBuilder();
+            $qb->delete('WebCMS\TicketModule\Entity\Photo', 'l')
+                ->where('l.ticket = ?1')
+                ->setParameter(1, $this->ticket)
+                ->getQuery()
+                ->execute();
         }
 
         if(array_key_exists('files', $_POST)){
@@ -137,33 +145,33 @@ class TicketPresenter extends BasePresenter
     			else $default = 0;
 
           if(array_key_exists('fileCarousel', $_POST)) $carousel = intval($_POST['fileCarousel'][0]) - 1;
-    			else $carousel = 0;
+                else $carousel = 0;
 
-    			foreach($_POST['files'] as $path){
+            foreach($_POST['files'] as $path){
 
-    				$photo = new \WebCMS\TicketModule\Entity\Photo;
-    				$photo->setTitle($_POST['fileNames'][$counter]);
+                $photo = new \WebCMS\TicketModule\Entity\Photo;
+                $photo->setTitle($_POST['fileNames'][$counter]);
 
-    				if($default === $counter){
-    					$photo->setDefault(TRUE);
-    				}else{
-    					$photo->setDefault(FALSE);
-    				}
+                if($default === $counter){
+                    $photo->setDefault(TRUE);
+                }else{
+                    $photo->setDefault(FALSE);
+                }
 
-            if($carousel === $counter){
-    					$photo->setCarousel(TRUE);
-    				}else{
-    					$photo->setCarousel(FALSE);
-    				}
+                if($carousel === $counter){
+                    $photo->setCarousel(TRUE);
+                }else{
+                    $photo->setCarousel(FALSE);
+                }
 
-    				$photo->setPath($path);
-    				$photo->setTicket($this->ticket);
+                $photo->setPath($path);
+                $photo->setTicket($this->ticket);
 
-    				$this->em->persist($photo);
+                $this->em->persist($photo);
 
-    				$counter++;
-    			}
-    		}
+                $counter++;
+            }
+        }
 
         $this->ticket->setName($values->name);
         $this->ticket->setUrl($values->url);
