@@ -101,6 +101,8 @@ class TicketPresenter extends BasePresenter
             ->setRequired('Jméno je povinné.');
         $form->addText('url', 'URL')
             ->setRequired('URL je povinné.');
+        $form->addText('seoKeywords', 'SEO klíčová slova');
+        $form->addTextArea('seoDescription', 'SEO popis');
         $form->addText('date', 'Datum')->setAttribute('class', array('datepicker'));
         $form->addText('day', 'Den');
         $form->addText('place', 'Místo');
@@ -183,6 +185,8 @@ class TicketPresenter extends BasePresenter
         $this->ticket->setPlace($values->place);
         $this->ticket->setPrice($values->price);
         $this->ticket->setText($values->text);
+        $this->ticket->setSeoDescription($values->seoDescription);
+        $this->ticket->setSeoKeywords($values->seoKeywords);
         $this->ticket->setCarousel($values->carousel);
         $this->ticket->setCategory($values->category);
 

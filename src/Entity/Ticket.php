@@ -76,6 +76,16 @@ class Ticket extends \WebCMS\Entity\Entity
     private $text;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $seoKeywords;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $seoDescription;
+
+    /**
      * @gedmo\Slug(fields={"name", "id"})
      * @ORM\Column(length=64)
      */
@@ -209,6 +219,40 @@ class Ticket extends \WebCMS\Entity\Entity
 
     public function setText($text) {
         $this->text = $text;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSeoKeywords()
+    {
+        return $this->seoKeywords;
+    }
+
+    /**
+     * @param mixed $seoKeywords
+     */
+    public function setSeoKeywords($seoKeywords)
+    {
+        $this->seoKeywords = $seoKeywords;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSeoDescription()
+    {
+        return $this->seoDescription;
+    }
+
+    /**
+     * @param mixed $seoDescription
+     */
+    public function setSeoDescription($seoDescription)
+    {
+        $this->seoDescription = $seoDescription;
         return $this;
     }
 
