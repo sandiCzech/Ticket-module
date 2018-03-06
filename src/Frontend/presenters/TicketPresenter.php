@@ -72,12 +72,18 @@ class TicketPresenter extends BasePresenter
 
 	public function ticketsBox($context, $fromPage)
 	{
+
+        $ticket = $context->getParameter('parameters');
+        $ticket = $context->repository->findOneBySlug($ticket[0]);
+
 		$repository = $context->em->getRepository('\WebCMS\TicketModule\Entity\Ticket');
-		$tickets = $repository->findBy(array(), array('rank' => 'ASC'), $limit = 3);
+		$tickets = $repository->findBy(array(), array('rank' => 'ASC'));
+		$tickets = $this->shuffle_objects($tickets);
 
 		$template = $context->createTemplate();
 		$template->setFile('../app/templates/ticket-module/Ticket/box.latte');
 		$template->tickets = $tickets;
+		$template->ticketId = $ticket->getId();
 		$template->link = $context->link(':Frontend:Ticket:Ticket:default', array(
 		    'id' => $fromPage->getId(),
 		    'path' => $fromPage->getPath(),
@@ -85,6 +91,18 @@ class TicketPresenter extends BasePresenter
 		));
 
 		return $template;
-  }
+    }
+
+    public function shuffle_objects($list) {
+        if (!is_array($list)) return $list;
+
+        $keys = array_keys($list);
+        shuffle($keys);
+        $random = array();
+        foreach ($keys as $key)
+            $random[$key] = $list[$key];
+
+        return $random;
+    }
 
 }
