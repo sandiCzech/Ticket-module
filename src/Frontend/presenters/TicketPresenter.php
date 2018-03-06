@@ -74,7 +74,9 @@ class TicketPresenter extends BasePresenter
 	{
 
         $ticket = $context->getParameter('parameters');
-        $ticket = $context->repository->findOneBySlug($ticket[0]);
+        if (count($ticket) > 0) {
+            $ticket = $context->repository->findOneBySlug($ticket[0]);
+        }
 
 		$repository = $context->em->getRepository('\WebCMS\TicketModule\Entity\Ticket');
 		$tickets = $repository->findBy(array(), array('rank' => 'ASC'));
@@ -83,7 +85,7 @@ class TicketPresenter extends BasePresenter
 		$template = $context->createTemplate();
 		$template->setFile('../app/templates/ticket-module/Ticket/box.latte');
 		$template->tickets = $tickets;
-		$template->ticketId = $ticket->getId();
+        if (count($ticket) > 0) {$template->ticketId = $ticket->getId();}
 		$template->link = $context->link(':Frontend:Ticket:Ticket:default', array(
 		    'id' => $fromPage->getId(),
 		    'path' => $fromPage->getPath(),
