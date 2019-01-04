@@ -43,7 +43,7 @@ class TicketPresenter extends BasePresenter
 
 	public function actionDefault($id)
     {
-		$this->tickets = $this->repository->findBy(array(), array('rank' => 'ASC'));
+		$this->tickets = $this->repository->findBy(array(), array('date' => 'ASC'));
 		$this->categories = $this->categoriesRepository->findBy(array(), array('id' => 'DESC'));
 	}
 
